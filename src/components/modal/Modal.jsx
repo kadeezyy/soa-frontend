@@ -8,9 +8,9 @@ const Modal = ({ setIsModal, isModal, selectedItem }) => {
             <div className={styles.modalBackdrop} onClick={() => setIsModal(false)}>
                 <div className={styles.modalContainer} onClick={(e) => e.stopPropagation()}>
                     <h2>{selectedItem.name}</h2>
-                    <p><strong>Длина:</strong> {selectedItem.length}</p>
-                    <p><strong>Сложность:</strong> {selectedItem.difficulty}</p>
-                    <p><strong>Описание:</strong> {selectedItem.description}</p>
+                    <p><strong>Дистанция:</strong> {selectedItem.distance}</p>
+                    <p><strong>Откуда:</strong> {selectedItem.from.name}</p>
+                    <p><strong>Куда:</strong> {selectedItem.to.name}</p>
                     <Button
                         variant="contained"
                         color="primary"

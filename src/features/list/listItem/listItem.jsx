@@ -10,7 +10,7 @@ const ListItem = ({item,setIsModal,setSelectedItem}) => {
 
     return (
 
-        <button className={styles.container} onClick={()=>clickHandler(item)}>
+        <button className={styles.container} onClick={()=> clickHandler(item)}>
             {item.name}
         </button>
     );

@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
 import { FormControl, InputLabel, MenuItem, Select } from "@mui/material";
 
-const DropDown = ({ items,label,defaultValue }) => {
-    const [selectedValue, setSelectedValue] = useState('');
+const DropDown = ({ items,label,defaultValue, setItem }) => {
+    const [selectedValue, setSelectedValue] = useState(defaultValue || null);
 
     const handleChange = (event) => {
-        setSelectedValue(event.target.value);
+        const selectedObject = items.find(item => item.id === event.target.value);
+        setSelectedValue(selectedObject);
+        setItem(selectedObject)
     };
 
     return (
@@ -14,14 +16,14 @@ const DropDown = ({ items,label,defaultValue }) => {
             <Select
                 labelId="dynamic-select-label"
                 id="dynamic-select"
-                value={selectedValue}
+                value={selectedValue ? selectedValue.id : ""}
                 label="Select an option"
                 onChange={handleChange}
                 defaultValue={defaultValue}
             >
-                {items.map((item, index) => (
-                    <MenuItem key={index} value={item.value}>
-                        {item.label}
+                {items.map((item) => (
+                    <MenuItem key={item.id} value={item.id}>
+                        {item.name}
                     </MenuItem>
                 ))}
             </Select>
