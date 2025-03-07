@@ -4,21 +4,26 @@ import styles from "./Header.module.css";
 import { Button } from "@mui/material";
 import Filter from "../filter/Filter";
 import Sort from "../sort/Sort";
+import {fetchGetRoutesData} from "../../utils/fetchData";
 
-const Header = ({ setIsList, isList, setRoutesList, setLocationList}) => {
+const Header = ({ setIsList, isList, setRoutesList, setLocationList, from, setFrom,to, setTo, chosenSortFields, setChosenSortFields,filters, setFilters}) => {
     const [dropDownData, setDropDownData] = useState([]);
-    const [from, setFrom] = useState(null);
-    const [to, setTo] = useState(null);
-    const [chosenSortFields, setChosenSortFields] = useState([]);
+
     const [isFilterModal, setIsFilterModal] = useState(false);
     const [isSortModal, setIsSortModal] = useState(false);
-    const [filters, setFilters] = useState({
-        distance: { from: "", to: "" },
-        routeName: { from: "", to: "" },
-        xLocation: { from: "", to: "" },
-        yLocation: { from: "", to: "" },
-        zLocation: { from: "", to: "" },
-    });
+
+
+    // const [from, setFrom] = useState(null);
+    // const [to, setTo] = useState(null);
+    // const [chosenSortFields, setChosenSortFields] = useState([]);
+    // const [filters, setFilters] = useState({
+    //     distance: { from: "", to: "" },
+    //     routeName: { from: "", to: "" },
+    //     xLocation: { from: "", to: "" },
+    //     yLocation: { from: "", to: "" },
+    //     zLocation: { from: "", to: "" },
+    // });
+    // TODO: delete later
     const limit = 10;
 
     useEffect(() => {
@@ -44,58 +49,58 @@ const Header = ({ setIsList, isList, setRoutesList, setLocationList}) => {
         fetchDropdownData();
     }, []); // Empty dependency array ensures this runs only once on mount
 
-    const fetchGetRoutesData = async (offset) => {
-        try {
-            const sortBy = chosenSortFields;
-            const url = new URL(`https://localhost:8443/route-management-service-1/routes`);
-            
-            const filterParams = JSON.stringify({
-                locationIdFrom: from?.id,
-                locationIdTo: to?.id,
-                distanceFrom: filters.distance.from !== "" ? Number(filters.distance.from) : undefined,
-                distanceTo: filters.distance.to !== "" ? Number(filters.distance.to) : undefined,
-                // minId: filters.distance.from !== "" ? Number(filters.distance.from) : undefined,
-                // maxId: filters.distance.to !== "" ? Number(filters.distance.to) : undefined,
-                name: filters.routeName.from !== "" ? filters.routeName.from : undefined,
-                minX: filters.xLocation.from !== "" ? Number(filters.xLocation.from) : undefined,
-                maxX: filters.xLocation.to !== "" ? Number(filters.xLocation.to) : undefined,
-                minY: filters.yLocation.from !== "" ? Number(filters.yLocation.from) : undefined,
-                maxY: filters.yLocation.to !== "" ? Number(filters.yLocation.to) : undefined,
-                minZ: filters.zLocation.from !== "" ? Number(filters.zLocation.from) : undefined,
-                maxZ: filters.zLocation.to !== "" ? Number(filters.zLocation.to) : undefined,
-            });
-
-
-            // Добавляем параметры сортировки и фильтрации
-            sortBy.forEach((field) => {
-                url.searchParams.append('sortBy', field);
-            });
-            url.searchParams.append('limit', limit);
-            url.searchParams.append('offset', offset);
-
-            const response = await fetch(
-                url,
-                {
-                    method: 'PUT',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: filterParams
-                }
-            );
-
-            if (!response.ok) {
-                throw new Error('Failed to fetch route data');
-            }
-
-            const data = await response.json();
-            console.log(data)
-            setRoutesList(data)
-            setIsList(true);
-        } catch (error) {
-            console.error('Error fetching route data:', error);
-        }
-    };
+    // const fetchGetRoutesData = async (offset) => {
+    //     try {
+    //         const sortBy = chosenSortFields;
+    //         const url = new URL(`https://localhost:8443/route-management-service-1/routes`);
+    //
+    //         const filterParams = JSON.stringify({
+    //             locationIdFrom: from?.id,
+    //             locationIdTo: to?.id,
+    //             distanceFrom: filters.distance.from !== "" ? Number(filters.distance.from) : undefined,
+    //             distanceTo: filters.distance.to !== "" ? Number(filters.distance.to) : undefined,
+    //             // minId: filters.distance.from !== "" ? Number(filters.distance.from) : undefined,
+    //             // maxId: filters.distance.to !== "" ? Number(filters.distance.to) : undefined,
+    //             name: filters.routeName.from !== "" ? filters.routeName.from : undefined,
+    //             minX: filters.xLocation.from !== "" ? Number(filters.xLocation.from) : undefined,
+    //             maxX: filters.xLocation.to !== "" ? Number(filters.xLocation.to) : undefined,
+    //             minY: filters.yLocation.from !== "" ? Number(filters.yLocation.from) : undefined,
+    //             maxY: filters.yLocation.to !== "" ? Number(filters.yLocation.to) : undefined,
+    //             minZ: filters.zLocation.from !== "" ? Number(filters.zLocation.from) : undefined,
+    //             maxZ: filters.zLocation.to !== "" ? Number(filters.zLocation.to) : undefined,
+    //         });
+    //
+    //
+    //         // Добавляем параметры сортировки и фильтрации
+    //         sortBy.forEach((field) => {
+    //             url.searchParams.append('sortBy', field);
+    //         });
+    //         url.searchParams.append('limit', limit);
+    //         url.searchParams.append('offset', offset);
+    //
+    //         const response = await fetch(
+    //             url,
+    //             {
+    //                 method: 'PUT',
+    //                 headers: {
+    //                     'Content-Type': 'application/json',
+    //                 },
+    //                 body: filterParams
+    //             }
+    //         );
+    //
+    //         if (!response.ok) {
+    //             throw new Error('Failed to fetch route data');
+    //         }
+    //
+    //         const data = await response.json();
+    //         console.log(data)
+    //         setRoutesList(data)
+    //         setIsList(true);
+    //     } catch (error) {
+    //         console.error('Error fetching route data:', error);
+    //     }
+    // };
 
     const sortFields = [
         { value: "Name", name: "Name" , id: "Name"},
@@ -106,7 +111,15 @@ const Header = ({ setIsList, isList, setRoutesList, setLocationList}) => {
     ];
 
     const handleClick = async () => {
-        await fetchGetRoutesData(0);
+        await fetchGetRoutesData(
+            from,
+            to,
+            filters,
+            chosenSortFields,
+            0,
+            setRoutesList,
+            setIsList
+        );
         setIsList(true);
     };
 

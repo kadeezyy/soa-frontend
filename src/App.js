@@ -8,10 +8,21 @@ function App() {
     const [routesListPagination, setRoutesList] = useState();
     const [locationList, setLocationList] = useState([]);
 
+    const [from, setFrom] = useState(null);
+    const [to, setTo] = useState(null);
+    const [chosenSortFields, setChosenSortFields] = useState([]);
+     const [filters, setFilters] = useState({
+         distance: { from: "", to: "" },
+         routeName: { from: "", to: "" },
+         xLocation: { from: "", to: "" },
+         yLocation: { from: "", to: "" },
+         zLocation: { from: "", to: "" },
+     });
+
     return (
     <div style={{ padding: "20px" }}>
-        <Header setIsList={setIsList} isList={isList} setRoutesList={setRoutesList} setLocationList={setLocationList}/>
-        {isList ? <List routesListPagination={routesListPagination}/> : "" }
+        <Header from={from} setFrom={setFrom} to={to} setTo={setTo} chosenSortFields={chosenSortFields} setChosenSortFields={setChosenSortFields} filters={filters} setFilters={setFilters} setIsList={setIsList} isList={isList} setRoutesList={setRoutesList} setLocationList={setLocationList}/>
+        {isList ? <List from={from} setFrom={setFrom} to={to} setTo={setTo} chosenSortFields={chosenSortFields} setChosenSortFields={setChosenSortFields} filters={filters} setFilters={setFilters} routesListPagination={routesListPagination} setIsList={setIsList} setRoutesList={setRoutesList}/> : "" }
         <CreateRoute dropDownData={locationList}/>
     </div>
   );

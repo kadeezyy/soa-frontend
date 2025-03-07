@@ -1,26 +1,35 @@
 import React, {useState, useEffect} from 'react';
-import ListItem from "./listItem/ListItem";
+import ListItem from "./listItem/ListItem"; // delete non used imports
 import styles from "./List.module.css";
 import Modal from "../../components/modal/Modal";
-import fetchGetRoutesData from '../header/Header'
+import {fetchGetRoutesData} from '../../utils/fetchData'
 
-const List = ({ routesListPagination}) => {
+const List = ({ routesListPagination,  from, setFrom,to, setTo, chosenSortFields, setChosenSortFields,filters, setFilters, setIsList, setRoutesList}) => {
     const [isModal,setIsModal] = useState(false);
     const [selectedItem, setSelectedItem] = useState(null);
     const [routes, setRoutes] = useState(routesListPagination.routes);
     const [sortConfig, setSortConfig] = useState({ key: null, direction: 'asc' });
     const [currentPage, setCurrentPage] = useState(1);
 
+    const limit = 10
 
     useEffect(() => {
         setRoutes(routesListPagination.routes); // Обновляем routes, когда routesList изменяется
     }, [routesListPagination]); 
 
-    const handlePagination = (page) => {
-        fetchGetRoutesData(page * routesListPagination.limit)
+    const handlePagination = async (page) => {
         setCurrentPage(page)
-    }
 
+        await fetchGetRoutesData(
+            from,
+            to,
+            filters,
+            chosenSortFields,
+            limit * (page - 1),
+            setRoutesList,
+            setIsList
+        );
+    }
 
     const handleSort = (key) => {
     };
@@ -52,10 +61,10 @@ const List = ({ routesListPagination}) => {
         setIsModal(true);
     };
 
-    const handleDelete = () => {
+    const handleDelete =  async () => {
         if (selectedItem) {
             setRoutes(routes.filter(route => route.id !== selectedItem.id));
-            fetchDeleteRoute(selectedItem.id)
+             await fetchDeleteRoute(selectedItem.id)
             setSelectedItem(null);
             setIsModal(false);
         }
@@ -65,12 +74,6 @@ const List = ({ routesListPagination}) => {
 
     return (
         <div className={styles.container}>
-            {/* {routesList.map((item, i) => (
-                <ListItem key={i} item={item} setIsModal={setIsModal} setSelectedItem={setSelectedItem}  />
-            ))}
-
-
-            <Modal setIsModal={setIsModal} isModal={isModal} selectedItem={selectedItem}/> */}
             <div className={styles.container}>
             <div className={styles.listHeader}>
                 <table className={styles.table}>
@@ -97,7 +100,7 @@ const List = ({ routesListPagination}) => {
                 </table>
             </div>
             <div className={styles.pagination}>
-                <span>Страница {currentPage} из {totalPages}</span>
+                <span>Страница {currentPage}</span>
                 <div className={styles.paginationBtnWrapper}>
                     <button disabled={currentPage === 1} onClick={() => handlePagination(currentPage - 1)}>Назад</button>
                     <button onClick={() => handlePagination(currentPage + 1)}>Вперёд
