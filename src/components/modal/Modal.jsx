@@ -2,7 +2,7 @@ import React from 'react';
 import styles from './Modal.module.css';
 import { Button } from "@mui/material";
 
-const Modal = ({ setIsModal, isModal, selectedItem }) => {
+const Modal = ({ setIsModal, isModal, selectedItem, handleDelete }) => {
     return (
         isModal && (
             <div className={styles.modalBackdrop} onClick={() => setIsModal(false)}>
@@ -18,6 +18,13 @@ const Modal = ({ setIsModal, isModal, selectedItem }) => {
                     >
                         Закрыть
                     </Button>
+                    <Button
+                            variant="contained"
+                            color="secondary"
+                            onClick={() => handleDelete(selectedItem.id)}
+                        >
+                            Удалить
+                        </Button>
                 </div>
             </div>
         )

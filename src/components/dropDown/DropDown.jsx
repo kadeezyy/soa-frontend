@@ -7,7 +7,7 @@ const DropDown = ({ items,label,defaultValue, setItem }) => {
     const handleChange = (event) => {
         const selectedObject = items.find(item => item.id === event.target.value);
         setSelectedValue(selectedObject);
-        setItem(selectedObject)
+        setItem && setItem(selectedObject)
     };
 
     return (

@@ -4,7 +4,7 @@
   left: 0;
   width: 100vw;
   height: 100vh;
-  background-color: rgba(0, 0, 0, 0.5); 
+  background-color: rgba(0, 0, 0, 0.5);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -39,6 +39,11 @@ button {
   margin-top: 20px;
 }
 
+.buttonGroup {
+  display: flex;
+  justify-content: space-evenly;
+  margin-top: 20px;
+}
 @keyframes fadeIn {
   from {
     opacity: 0;
@@ -56,3 +61,4 @@ button {
     transform: scale(1);
   }
 }
+

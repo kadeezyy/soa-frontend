@@ -5,13 +5,13 @@ import {useState} from "react";
 
 function App() {
     const [isList, setIsList] = useState(false);
-    const [routesList, setRoutesList] = useState([]);
+    const [routesListPagination, setRoutesList] = useState();
     const [locationList, setLocationList] = useState([]);
 
     return (
     <div style={{ padding: "20px" }}>
         <Header setIsList={setIsList} isList={isList} setRoutesList={setRoutesList} setLocationList={setLocationList}/>
-        {isList ? <List routesList={routesList}/> : "" }
+        {isList ? <List routesListPagination={routesListPagination}/> : "" }
         <CreateRoute dropDownData={locationList}/>
     </div>
   );
